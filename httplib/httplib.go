@@ -1,13 +1,33 @@
-// Beego (http://beego.me/)
+// Copyright 2014 beego Author. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
-// @description beego is an open-source, high-performance web framework for the Go programming language.
-
-// @link        http://github.com/astaxie/beego for the canonical source repository
-
-// @license     http://github.com/astaxie/beego/blob/master/LICENSE
-
-// @authors     astaxie
-
+// Usage:
+//
+// import "github.com/astaxie/beego/context"
+//
+//	b:=httplib.Post("http://beego.me/")
+//	b.Param("username","astaxie")
+//	b.Param("password","123456")
+//	b.PostFile("uploadfile1", "httplib.pdf")
+//	b.PostFile("uploadfile2", "httplib.txt")
+//	str, err := b.String()
+//	if err != nil {
+//		t.Fatal(err)
+//	}
+//	fmt.Println(str)
+//
+//  more docs http://beego.me/docs/module/httplib.md
 package httplib
 
 import (
@@ -127,7 +147,7 @@ func (b *BeegoHttpRequest) SetEnableCookie(enable bool) *BeegoHttpRequest {
 }
 
 // SetUserAgent sets User-Agent header field
-func (b *BeegoHttpRequest) SetAgent(useragent string) *BeegoHttpRequest {
+func (b *BeegoHttpRequest) SetUserAgent(useragent string) *BeegoHttpRequest {
 	b.setting.UserAgent = useragent
 	return b
 }
@@ -395,10 +415,7 @@ func (b *BeegoHttpRequest) ToFile(filename string) error {
 	}
 	defer resp.Body.Close()
 	_, err = io.Copy(f, resp.Body)
-	if err != nil {
-		return err
-	}
-	return nil
+	return err
 }
 
 // ToJson returns the map that marshals from the body bytes as json in response .
@@ -409,24 +426,18 @@ func (b *BeegoHttpRequest) ToJson(v interface{}) error {
 		return err
 	}
 	err = json.Unmarshal(data, v)
-	if err != nil {
-		return err
-	}
-	return nil
+	return err
 }
 
 // ToXml returns the map that marshals from the body bytes as xml in response .
 // it calls Response inner.
-func (b *BeegoHttpRequest) ToXML(v interface{}) error {
+func (b *BeegoHttpRequest) ToXml(v interface{}) error {
 	data, err := b.Bytes()
 	if err != nil {
 		return err
 	}
 	err = xml.Unmarshal(data, v)
-	if err != nil {
-		return err
-	}
-	return nil
+	return err
 }
 
 // Response executes request client gets response mannually.
